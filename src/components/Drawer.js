@@ -1,4 +1,4 @@
-import React, {useState} from 'react'
+import React from 'react'
 import List from '@material-ui/core/List';
 import ListItem from '@material-ui/core/ListItem';
 import ListItemText from '@material-ui/core/ListItemText';
@@ -25,7 +25,9 @@ export const SideDrawer = ({ mobileOpen, handleDrawerToggle }) => {
     //const { window } = undefined;//props;
     const classes = useStyles();
     const theme = useTheme();
-const [countries, setCountries] = useState(['United States', 'Pakistan'])
+//const [countries, setCountries] = useState(['United States', 'Pakistan'])
+
+const countries = ['United States', 'Pakistan'];
 
 
     const drawer = (

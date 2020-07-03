@@ -58,7 +58,7 @@ function ResponsiveDrawer() {
                     </IconButton>
                     <Typography variant="h6" noWrap>
                         COVID19  
-                        <img src='/coronavirus.png' className="App-logo" alt="logo" className={classes.icon} /> TRACKER
+                        <img src='/coronavirus.png' alt="logo" className={classes.icon} /> TRACKER
           </Typography>
          
                 </Toolbar>

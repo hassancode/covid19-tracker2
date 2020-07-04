@@ -18,26 +18,43 @@ function mapMarkers(results) {
         var data = results.features[i].properties;
 
         var latLng = new window.google.maps.LatLng(results.features[i].properties.latitude, results.features[i].properties.longitude);
-        var cityCircle = new window.google.maps.Marker({
-            position: latLng,
-            map: map,
-            title: data.title
-        });
-        //  var cityCircle = new window.google.maps.Circle({
-        //      strokeColor: "#FF0000",
-        //      strokeOpacity: 0.8,
-        //      strokeWeight: 2,
-        //      fillColor: "#FF0000",
-        //      fillOpacity: 0.35,
-        //      label: data.confirmed,
-        //      map: map,
-        //      center: latLng,
-        //      radius: Math.sqrt(results.features[i].properties.confirmed) * 1000
-        //  });
+        // var cityCircle = new window.google.maps.Marker({
+        //     position: latLng,
+        //     map: map,
+        //     title: data.title
+        // });
+         var cityCircle = new window.google.maps.Circle({
+             strokeColor: "#FF0000",
+             strokeOpacity: 0.8,
+             strokeWeight: 2,
+             fillColor: "#FF0000",
+             fillOpacity: 0.35,
+             label: data.confirmed.toString(),
+             map: map,
+             center: latLng,
+             radius: Math.sqrt(results.features[i].properties.confirmed) * 1000
+         });
 
-        //Attach click event to the marker.
+        //Attach click event to the marker. Works with marker
+        // (function (cityCircle, data) {
+        //     window.google.maps.event.addListener(cityCircle, 'click', function (e) {
+        //         //Wrap the content inside an HTML DIV in order to set height and width of InfoWindow.
+        //         var contentString =
+        //             '<div id="content">' +
+        //             '<div>Country: ' + data.name + '</div>' +
+        //             '<div>Confirmed: ' + data.confirmed + '</div>' +
+        //             '<div>Deaths: ' + data.deaths + '</div>' +
+        //             '<div>Active: ' + data.active + '</div>' +
+        //             '<div>Recovered: ' + data.recovered + '</div>' +
+        //             "</div>";
+
+        //         infoWindow.setContent(contentString);
+        //         infoWindow.open(this.map, cityCircle);
+        //     });
+        // })(cityCircle, data);
+
         (function (cityCircle, data) {
-            window.google.maps.event.addListener(cityCircle, "click", function (e) {
+            window.google.maps.event.addListener(cityCircle, 'click', function (e) {
                 //Wrap the content inside an HTML DIV in order to set height and width of InfoWindow.
                 var contentString =
                     '<div id="content">' +
@@ -47,17 +64,11 @@ function mapMarkers(results) {
                     '<div>Active: ' + data.active + '</div>' +
                     '<div>Recovered: ' + data.recovered + '</div>' +
                     "</div>";
-
+                infoWindow.setPosition(e.latLng);
                 infoWindow.setContent(contentString);
-                infoWindow.open(this.map, cityCircle);
+                infoWindow.open(this.map);
             });
         })(cityCircle, data);
-
-        //  window.google.maps.event.addListener(cityCircle, 'click', function (e) {
-        //      infoWindow.setPosition(e.latLng);
-        //      infoWindow.setContent(this.label);
-        //      infoWindow.open(this.map);
-        //  });
     }
 }
 

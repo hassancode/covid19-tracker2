@@ -1,4 +1,5 @@
 import React, { useEffect } from 'react'
+import jsonData from '../data.json';
 var map;
 function initMap() {
     map = new window.google.maps.Map(
@@ -11,65 +12,49 @@ function initMap() {
 
 
 function mapMarkers(results) {
-   
+    var infoWindow = new window.google.maps.InfoWindow();
     for (var i = 0; i < results.features.length; i++) {
         var data = results.features[i].properties;
+        var latLng = new window.google.maps.LatLng(data.latitude, data.longitude);
+        var scale = Math.sqrt(Math.sqrt(data.confirmed))
+        var marker = new window.google.maps.Marker({
+            position: latLng,
+            title: 'test',
+            icon: {
+                path: window.google.maps.SymbolPath.CIRCLE,
+                fillColor: '#f00',
+                fillOpacity: 0.35,
+                strokeWeight: 0,
+                scale: scale
+            },
+            map: map
+        });
+        // window.google.maps.event.addListener(marker, 'click', function (e) {
+        //     infowindow.setPosition(e.latLng);
+        //     //infowindow.setContent(this.label);
+        //     infowindow.open(map);
+        // });
+        //attachInfo(marker);
 
-        var latLng = new window.google.maps.LatLng(results.features[i].properties.latitude, results.features[i].properties.longitude);
-         var cityCircle = new window.google.maps.Circle({
-             strokeColor: "#FF0000",
-             strokeOpacity: 0.8,
-             strokeWeight: 2,
-             fillColor: "#FF0000",
-             fillOpacity: 0.35,
-             label: data.confirmed.toString(),
-             map: map,
-             center: latLng,
-             radius: Math.sqrt(results.features[i].properties.confirmed) * 1000
-         });
-          //Create and open InfoWindow.
-         var infoWindow = new window.google.maps.InfoWindow();
-        //Attach click event to the marker. Works with marker
-        // (function (cityCircle, data) {
-        //     window.google.maps.event.addListener(cityCircle, 'click', function (e) {
-        //         //Wrap the content inside an HTML DIV in order to set height and width of InfoWindow.
-        //         var contentString =
-        //             '<div id="content">' +
-        //             '<div>Country: ' + data.name + '</div>' +
-        //             '<div>Confirmed: ' + data.confirmed + '</div>' +
-        //             '<div>Deaths: ' + data.deaths + '</div>' +
-        //             '<div>Active: ' + data.active + '</div>' +
-        //             '<div>Recovered: ' + data.recovered + '</div>' +
-        //             "</div>";
 
-        //         infoWindow.setContent(contentString);
-        //         infoWindow.open(this.map, cityCircle);
-        //     });
-        // })(cityCircle, data);
-         //partially works with circle
-        (function (cityCircle, data) {
-            window.google.maps.event.addListener(cityCircle, 'click', function (e) {
+        //Attach click event to the marker.
+        (function (marker, data) {
+            window.google.maps.event.addListener(marker, "click", function (e) {
                 //Wrap the content inside an HTML DIV in order to set height and width of InfoWindow.
-                var contentString =
-                    '<div id="content">' +
-                    '<div>Country: ' + data.name + '</div>' +
-                    '<div>Confirmed: ' + data.confirmed + '</div>' +
-                    '<div>Deaths: ' + data.deaths + '</div>' +
-                    '<div>Active: ' + data.active + '</div>' +
-                    '<div>Recovered: ' + data.recovered + '</div>' +
-                    "</div>";
-                infoWindow.setPosition(e.latLng);
-                infoWindow.setContent(contentString);
-                infoWindow.open(this.map);
+                infoWindow.setContent("<div style = 'width:200px;min-height:40px'>" + data.confirmed + "</div>");
+                infoWindow.open(map, marker);
             });
-        })(cityCircle, data);
-
-        //  window.google.maps.event.addListener(cityCircle, 'click', function (e) {
-        //      infoWindow.setPosition(e.latLng);
-        //      infoWindow.setContent(this.label);
-        //      infoWindow.open(this.map);
-        //  });
+        })(marker, data);
     }
+
+    // function attachInfo(marker) {
+    //     window.google.maps.event.addListener(marker, 'click', function (e) {
+    //         alert(e.title);
+    //         infowindow.setContent(e.title);
+    //         infowindow.open(map, marker);
+    //     });
+    // }
+
 }
 
 // function mapMarkers(results) {
@@ -151,16 +136,16 @@ export const CovidMap = () => {
     useEffect(() => {
 
         async function fetchData() {
-            const data = fetch("https://covid19-data.p.rapidapi.com/geojson-ww", {
-                "method": "GET",
-                "headers": {
-                    "x-rapidapi-host": "covid19-data.p.rapidapi.com",
-                    "x-rapidapi-key": "dbf67c03a6mshcdf93c761d0bd26p1079a3jsn825caf63e790"
-                }
-            });
-            const jsonData = (await data).json();
-            const dataFromApi = await jsonData;
-
+            // const data = fetch("https://covid19-data.p.rapidapi.com/geojson-ww", {
+            //     "method": "GET",
+            //     "headers": {
+            //         "x-rapidapi-host": "covid19-data.p.rapidapi.com",
+            //         "x-rapidapi-key": "dbf67c03a6mshcdf93c761d0bd26p1079a3jsn825caf63e790"
+            //     }
+            // });
+            // const jsonData = (await data).json();
+            // const dataFromApi = await jsonData;
+            var dataFromApi = jsonData;
             map.data.addGeoJson(dataFromApi);
             mapMarkers(dataFromApi);
         }

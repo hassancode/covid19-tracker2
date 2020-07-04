@@ -1,5 +1,4 @@
 import React, { useEffect } from 'react'
-import jsonData from '../data.json';
 var map;
 function initMap() {
     map = new window.google.maps.Map(

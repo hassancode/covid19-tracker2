@@ -25,7 +25,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export default function CustomizedInputBase() {
+export default function CustomizedInputBase({handleChange}) {
   const classes = useStyles();
 
   return (
@@ -34,6 +34,7 @@ export default function CustomizedInputBase() {
         <MenuIcon />
       </IconButton> */}
       <InputBase
+        onChange={handleChange}
         className={classes.input}
         placeholder="Filter Country"
         inputProps={{ 'aria-label': 'filter country' }}

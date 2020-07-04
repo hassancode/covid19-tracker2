@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState, useEffect } from 'react'
 import List from '@material-ui/core/List';
 import ListItem from '@material-ui/core/ListItem';
 import ListItemText from '@material-ui/core/ListItemText';
@@ -7,6 +7,7 @@ import Hidden from '@material-ui/core/Hidden';
 import Drawer from '@material-ui/core/Drawer';
 import { makeStyles, useTheme } from '@material-ui/core/styles';
 import SearchCountry from './SearchCountry'
+import { fetchCountries } from '../apis/CovidApi';
 
 const drawerWidth = 240;
 const useStyles = makeStyles((theme) => ({
@@ -25,21 +26,39 @@ export const SideDrawer = ({ mobileOpen, handleDrawerToggle }) => {
     //const { window } = undefined;//props;
     const classes = useStyles();
     const theme = useTheme();
-//const [countries, setCountries] = useState(['United States', 'Pakistan'])
+    const [countryData, setCountryData] = useState({countries:[], filtered: []});
 
-const countries = ['United States', 'Pakistan'];
+    useEffect(() => {
+        const fetchApi = async () => {
+            const data = await fetchCountries();
+            setCountryData({countries: data, filtered: data});
+        };
+        fetchApi();
+    }, []);
 
+    String.prototype.toTitle = function() {
+        return this.replace(/(^|\s)\S/g, function(t) { return t.toUpperCase() });
+      }
+
+    //const countries = ['United States', 'Pakistan'];
+    function handleChange(e) {
+        var filteredList = countryData.countries.filter(country => country.startsWith(e.target.value.toTitle()))
+        if(filteredList.length > 0){
+            console.log(filteredList)
+        setCountryData({countries: countryData.countries, filtered: filteredList });
+        }
+    }
 
     const drawer = (
         <div>
             {/* <div className={classes.toolbar} /> */}
-            <SearchCountry />
+            <SearchCountry handleChange={handleChange} />
             <Divider />
             <List>
-                {countries.map((text, index) => (
+                {countryData.filtered.map((text, index) => (
                     <ListItem button key={text}>
                         {/* <ListItemIcon>{index % 2 === 0 ? <InboxIcon /> : <MailIcon />}</ListItemIcon> */}
-                        <ListItemText primary={text} onClick={handleDrawerToggle} />
+                        <ListItemText primary={text} />
                     </ListItem>
                 ))}
             </List>

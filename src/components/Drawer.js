@@ -26,27 +26,22 @@ export const SideDrawer = ({ mobileOpen, handleDrawerToggle }) => {
     //const { window } = undefined;//props;
     const classes = useStyles();
     const theme = useTheme();
-    const [countryData, setCountryData] = useState({countries:[], filtered: []});
+    const [countryData, setCountryData] = useState({ countries: [], filtered: [] });
 
     useEffect(() => {
         const fetchApi = async () => {
             const data = await fetchCountries();
-            setCountryData({countries: data, filtered: data});
+            setCountryData({ countries: data, filtered: data });
         };
         fetchApi();
     }, []);
 
-    String.prototype.toTitle = function() {
-        return this.replace(/(^|\s)\S/g, function(t) { return t.toUpperCase() });
-      }
+    function toTitles(s) { return s.replace(/\w\S*/g, function (t) { return t.charAt(0).toUpperCase() + t.substr(1).toLowerCase(); }); }
 
-    //const countries = ['United States', 'Pakistan'];
     function handleChange(e) {
-        var filteredList = countryData.countries.filter(country => country.startsWith(e.target.value.toTitle()))
-        if(filteredList.length > 0){
-            console.log(filteredList)
-        setCountryData({countries: countryData.countries, filtered: filteredList });
-        }
+        var input = toTitles(e.target.value);
+        var filteredList = countryData.countries.filter(country => input === '' || country.includes(input))
+        setCountryData({ countries: countryData.countries, filtered: filteredList });
     }
 
     const drawer = (

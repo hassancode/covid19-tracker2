@@ -39,10 +39,46 @@ function mapMarkers(results) {
         window.google.maps.event.addListener(cityCircle, 'click', function (e) {
             infowindow.setPosition(e.latLng);
             infowindow.setContent(this.label);
-            infowindow.open(map);
+            infowindow.open(this.map);
         });
     }
 }
+
+// function mapMarkers(results) {
+//     //for (var i = 0; i < results.features.length; i++) {
+//     results.features.forEach(feature => {
+//         var latLng = new window.google.maps.LatLng(feature.properties.latitude, feature.properties.longitude);
+//         var contentString =
+//             '<div id="content">' +
+//             '<div>Country: ' + feature.properties.name + '</div>' +
+//             '<div>Confirmed: ' + feature.properties.confirmed + '</div>' +
+//             '<div>Deaths: ' + feature.properties.deaths + '</div>' +
+//             '<div>Active: ' + feature.properties.active + '</div>' +
+//             '<div>Recovered: ' + feature.properties.recovered + '</div>' +
+//             "</div>";
+//         var infowindow = new window.google.maps.InfoWindow({
+//             content: contentString
+//         });
+
+//         var cityCircle = new window.google.maps.Circle({
+//             strokeColor: "#FF0000",
+//             strokeOpacity: 0.8,
+//             strokeWeight: 2,
+//             fillColor: "#FF0000",
+//             fillOpacity: 0.35,
+//             label: contentString,
+//             map: map,
+//             center: latLng,
+//             radius: Math.sqrt(feature.properties.confirmed) * 1000
+//         });
+
+//         window.google.maps.event.addListener(cityCircle, 'click', function (e) {
+//             infowindow.setPosition(e.latLng);
+//             infowindow.setContent(this.label);
+//             infowindow.open(this.map);
+//         });
+//     });
+// }
 
 export const CovidMap = () => {
     window.initMap = initMap.bind(this);

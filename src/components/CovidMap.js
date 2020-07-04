@@ -9,6 +9,9 @@ function initMap() {
     });
 }
 
+var infowindow;
+
+
 function mapMarkers(results) {
     for (var i = 0; i < results.features.length; i++) {
         var latLng = new window.google.maps.LatLng(results.features[i].properties.latitude, results.features[i].properties.longitude);
@@ -20,9 +23,7 @@ function mapMarkers(results) {
             '<div>Active: ' + results.features[i].properties.active + '</div>' +
             '<div>Recovered: ' + results.features[i].properties.recovered + '</div>' +
             "</div>";
-        var infowindow = new window.google.maps.InfoWindow({
-            content: contentString
-        });
+        
 
         var cityCircle = new window.google.maps.Circle({
             strokeColor: "#FF0000",
@@ -35,12 +36,14 @@ function mapMarkers(results) {
             center: latLng,
             radius: Math.sqrt(results.features[i].properties.confirmed) * 1000
         });
-
+        infowindow = new window.google.maps.InfoWindow({
+            content: contentString
+        });
         window.google.maps.event.addListener(cityCircle, 'click', function (e) {
             infowindow.setPosition(e.latLng);
             infowindow.setContent(this.label);
             infowindow.open(this.map);
-        });
+        }, this);
     }
 }
 

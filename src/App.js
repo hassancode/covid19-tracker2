@@ -1,6 +1,8 @@
 import React from 'react';
 import Header from './components/Header'
 import Main from './components/Main'
+import { CovidMap } from './components/CovidMap';
+import './App.css';
 
 function App() {
   return (

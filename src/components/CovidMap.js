@@ -9,43 +9,94 @@ function initMap() {
     });
 }
 
-var infowindow;
-
 
 function mapMarkers(results) {
-    for (var i = 0; i < results.features.length; i++) {
-        var latLng = new window.google.maps.LatLng(results.features[i].properties.latitude, results.features[i].properties.longitude);
-        var contentString =
-            '<div id="content">' +
-            '<div>Country: ' + results.features[i].properties.name + '</div>' +
-            '<div>Confirmed: ' + results.features[i].properties.confirmed + '</div>' +
-            '<div>Deaths: ' + results.features[i].properties.deaths + '</div>' +
-            '<div>Active: ' + results.features[i].properties.active + '</div>' +
-            '<div>Recovered: ' + results.features[i].properties.recovered + '</div>' +
-            "</div>";
-        
+    //Create and open InfoWindow.
+    var infoWindow = new window.google.maps.InfoWindow();
 
-        var cityCircle = new window.google.maps.Circle({
-            strokeColor: "#FF0000",
-            strokeOpacity: 0.8,
-            strokeWeight: 2,
-            fillColor: "#FF0000",
-            fillOpacity: 0.35,
-            label: contentString,
+    for (var i = 0; i < results.features.length; i++) {
+        var data = results.features[i].properties;
+
+        var latLng = new window.google.maps.LatLng(results.features[i].properties.latitude, results.features[i].properties.longitude);
+        var cityCircle = new window.google.maps.Marker({
+            position: latLng,
             map: map,
-            center: latLng,
-            radius: Math.sqrt(results.features[i].properties.confirmed) * 1000
+            title: data.title
         });
-        infowindow = new window.google.maps.InfoWindow({
-            content: contentString
-        });
-        window.google.maps.event.addListener(cityCircle, 'click', function (e) {
-            infowindow.setPosition(e.latLng);
-            infowindow.setContent(this.label);
-            infowindow.open(this.map);
-        }, this);
+        //  var cityCircle = new window.google.maps.Circle({
+        //      strokeColor: "#FF0000",
+        //      strokeOpacity: 0.8,
+        //      strokeWeight: 2,
+        //      fillColor: "#FF0000",
+        //      fillOpacity: 0.35,
+        //      label: data.confirmed,
+        //      map: map,
+        //      center: latLng,
+        //      radius: Math.sqrt(results.features[i].properties.confirmed) * 1000
+        //  });
+
+        //Attach click event to the marker.
+        (function (cityCircle, data) {
+            window.google.maps.event.addListener(cityCircle, "click", function (e) {
+                //Wrap the content inside an HTML DIV in order to set height and width of InfoWindow.
+                var contentString =
+                    '<div id="content">' +
+                    '<div>Country: ' + data.name + '</div>' +
+                    '<div>Confirmed: ' + data.confirmed + '</div>' +
+                    '<div>Deaths: ' + data.deaths + '</div>' +
+                    '<div>Active: ' + data.active + '</div>' +
+                    '<div>Recovered: ' + data.recovered + '</div>' +
+                    "</div>";
+
+                infoWindow.setContent(contentString);
+                infoWindow.open(map, cityCircle);
+            });
+        })(cityCircle, data);
+
+        //  window.google.maps.event.addListener(cityCircle, 'click', function (e) {
+        //      infoWindow.setPosition(e.latLng);
+        //      infoWindow.setContent(this.label);
+        //      infoWindow.open(this.map);
+        //  });
     }
 }
+
+// function mapMarkers(results) {
+//     var info = [];
+//     var circles = [];
+
+//     for (var i = 0; i < results.features.length; i++) {
+//         var latLng = new window.google.maps.LatLng(results.features[i].properties.latitude, results.features[i].properties.longitude);
+//         var contentString =
+//             '<div id="content">' +
+//             '<div>Country: ' + results.features[i].properties.name + '</div>' +
+//             '<div>Confirmed: ' + results.features[i].properties.confirmed + '</div>' +
+//             '<div>Deaths: ' + results.features[i].properties.deaths + '</div>' +
+//             '<div>Active: ' + results.features[i].properties.active + '</div>' +
+//             '<div>Recovered: ' + results.features[i].properties.recovered + '</div>' +
+//             "</div>";
+
+//         var cityCircle = new window.google.maps.Circle({
+//             strokeColor: "#FF0000",
+//             strokeOpacity: 0.8,
+//             strokeWeight: 2,
+//             fillColor: "#FF0000",
+//             fillOpacity: 0.35,
+//             label: contentString,
+//             map: map,
+//             center: latLng,
+//             radius: Math.sqrt(results.features[i].properties.confirmed) * 1000
+//         });
+//         var infowindow = new window.google.maps.InfoWindow({
+//             content: contentString
+//         });
+//         window.google.maps.event.addListener(cityCircle, 'click', function (e) {
+//             infowindow.setPosition(e.latLng);
+//             infowindow.setContent(this.label);
+//             infowindow.open(this.map);
+//         });
+//     }
+// }
 
 // function mapMarkers(results) {
 //     //for (var i = 0; i < results.features.length; i++) {

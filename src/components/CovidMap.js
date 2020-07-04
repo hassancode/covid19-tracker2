@@ -34,11 +34,11 @@ function mapMarkers(results) {
         //     //infowindow.setContent(this.label);
         //     infowindow.open(map);
         // });
-        attachInfo(marker,data);
+        attachInfo(marker, data);
 
 
         //Attach click event to the marker.
-       
+
     }
 
     function attachInfo(marker, data) {
@@ -49,8 +49,17 @@ function mapMarkers(results) {
         // });
         (function (marker, data) {
             window.google.maps.event.addListener(marker, "click", function (e) {
+                var contentString =
+                    '<div id="content">' +
+                    '<div>Country: ' + data.name + '</div>' +
+                    '<div>Confirmed: ' + data.confirmed + '</div>' +
+                    '<div>Deaths: ' + data.deaths + '</div>' +
+                    '<div>Active: ' + data.active + '</div>' +
+                    '<div>Recovered: ' + data.recovered + '</div>' +
+                    "</div>";
+
                 //Wrap the content inside an HTML DIV in order to set height and width of InfoWindow.
-                infoWindow.setContent("<div style = 'width:200px;min-height:40px'>" + data.confirmed + "</div>");
+                infoWindow.setContent(contentString);
                 infoWindow.open(map, marker);
             });
         })(marker, data);
@@ -137,16 +146,16 @@ export const CovidMap = () => {
     useEffect(() => {
 
         async function fetchData() {
-            // const data = fetch("https://covid19-data.p.rapidapi.com/geojson-ww", {
-            //     "method": "GET",
-            //     "headers": {
-            //         "x-rapidapi-host": "covid19-data.p.rapidapi.com",
-            //         "x-rapidapi-key": "dbf67c03a6mshcdf93c761d0bd26p1079a3jsn825caf63e790"
-            //     }
-            // });
-            // const jsonData = (await data).json();
-            // const dataFromApi = await jsonData;
-            var dataFromApi = jsonData;
+            const data = fetch("https://covid19-data.p.rapidapi.com/geojson-ww", {
+                "method": "GET",
+                "headers": {
+                    "x-rapidapi-host": "covid19-data.p.rapidapi.com",
+                    "x-rapidapi-key": "dbf67c03a6mshcdf93c761d0bd26p1079a3jsn825caf63e790"
+                }
+            });
+            const jsonData = (await data).json();
+            const dataFromApi = await jsonData;
+            // var dataFromApi = jsonData;
             map.data.addGeoJson(dataFromApi);
             mapMarkers(dataFromApi);
         }

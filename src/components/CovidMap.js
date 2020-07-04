@@ -37,12 +37,12 @@ function mapMarkers(results) {
         });
 
         window.google.maps.event.addListener(cityCircle, 'click', function (e) {
-            infowindow.setContent(this.label);
-            openWindow(e);
+            openWindow(e.latLng, this.label)
         });
 
-        function openWindow(e){
-            infowindow.setPosition(e.latLng);
+        function openWindow(latLng, label){
+            infowindow.setPosition(latLng);
+            infowindow.setContent(label);
             infowindow.open(map);
         }
     }

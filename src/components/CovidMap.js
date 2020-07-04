@@ -34,10 +34,19 @@ function mapMarkers(results) {
         //     //infowindow.setContent(this.label);
         //     infowindow.open(map);
         // });
-        //attachInfo(marker);
+        attachInfo(marker,data);
 
 
         //Attach click event to the marker.
+       
+    }
+
+    function attachInfo(marker, data) {
+        // window.google.maps.event.addListener(marker, 'click', function (e) {
+        //     alert(e.title);
+        //     infowindow.setContent(e.title);
+        //     infowindow.open(map, marker);
+        // });
         (function (marker, data) {
             window.google.maps.event.addListener(marker, "click", function (e) {
                 //Wrap the content inside an HTML DIV in order to set height and width of InfoWindow.
@@ -46,14 +55,6 @@ function mapMarkers(results) {
             });
         })(marker, data);
     }
-
-    // function attachInfo(marker) {
-    //     window.google.maps.event.addListener(marker, 'click', function (e) {
-    //         alert(e.title);
-    //         infowindow.setContent(e.title);
-    //         infowindow.open(map, marker);
-    //     });
-    // }
 
 }
 

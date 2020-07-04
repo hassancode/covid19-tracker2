@@ -3,7 +3,7 @@ var map;
 function initMap() {
     map = new window.google.maps.Map(
         document.getElementById('map'), {
-        zoom: 1,
+        zoom: 2,
         center: new window.google.maps.LatLng(2.8, -187.3),
         mapTypeId: 'terrain'
     });
@@ -49,7 +49,7 @@ function mapMarkers(results) {
                     "</div>";
 
                 infoWindow.setContent(contentString);
-                infoWindow.open(map, cityCircle);
+                infoWindow.open(this.map, cityCircle);
             });
         })(cityCircle, data);
 

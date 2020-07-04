@@ -37,10 +37,14 @@ function mapMarkers(results) {
         });
 
         window.google.maps.event.addListener(cityCircle, 'click', function (e) {
-            infowindow.setPosition(e.latLng);
             infowindow.setContent(this.label);
-            infowindow.open(map);
+            openWindow(e);
         });
+
+        function openWindow(e){
+            infowindow.setPosition(e.latLng);
+            infowindow.open(map);
+        }
     }
 }
 

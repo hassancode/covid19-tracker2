@@ -11,18 +11,11 @@ function initMap() {
 
 
 function mapMarkers(results) {
-    //Create and open InfoWindow.
-    var infoWindow = new window.google.maps.InfoWindow();
-
+   
     for (var i = 0; i < results.features.length; i++) {
         var data = results.features[i].properties;
 
         var latLng = new window.google.maps.LatLng(results.features[i].properties.latitude, results.features[i].properties.longitude);
-        // var cityCircle = new window.google.maps.Marker({
-        //     position: latLng,
-        //     map: map,
-        //     title: data.title
-        // });
          var cityCircle = new window.google.maps.Circle({
              strokeColor: "#FF0000",
              strokeOpacity: 0.8,
@@ -34,7 +27,8 @@ function mapMarkers(results) {
              center: latLng,
              radius: Math.sqrt(results.features[i].properties.confirmed) * 1000
          });
-
+          //Create and open InfoWindow.
+         var infoWindow = new window.google.maps.InfoWindow();
         //Attach click event to the marker. Works with marker
         // (function (cityCircle, data) {
         //     window.google.maps.event.addListener(cityCircle, 'click', function (e) {
@@ -52,7 +46,7 @@ function mapMarkers(results) {
         //         infoWindow.open(this.map, cityCircle);
         //     });
         // })(cityCircle, data);
-
+         //partially works with circle
         (function (cityCircle, data) {
             window.google.maps.event.addListener(cityCircle, 'click', function (e) {
                 //Wrap the content inside an HTML DIV in order to set height and width of InfoWindow.
@@ -69,6 +63,12 @@ function mapMarkers(results) {
                 infoWindow.open(this.map);
             });
         })(cityCircle, data);
+
+        //  window.google.maps.event.addListener(cityCircle, 'click', function (e) {
+        //      infoWindow.setPosition(e.latLng);
+        //      infoWindow.setContent(this.label);
+        //      infoWindow.open(this.map);
+        //  });
     }
 }
 

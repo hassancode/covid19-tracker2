@@ -34,7 +34,7 @@ const useStyles = makeStyles((theme) => ({
     }
 }));
 
-function ResponsiveDrawer() {
+function ResponsiveDrawer({handleCountrySelected, data}) {
     const classes = useStyles();
     const [mobileOpen, setMobileOpen] = React.useState(false);
 
@@ -63,7 +63,7 @@ function ResponsiveDrawer() {
          
                 </Toolbar>
             </AppBar>
-            <SideDrawer mobileOpen={mobileOpen} handleDrawerToggle={handleDrawerToggle} />
+            <SideDrawer geoData={data} mobileOpen={mobileOpen} handleDrawerToggle={handleDrawerToggle} handleCountrySelected={handleCountrySelected} />
         </div>
     );
 }

@@ -22,7 +22,7 @@ const useStyles = makeStyles((theme) => ({
     },
     toolbar: theme.mixins.toolbar,
 }))
-export const SideDrawer = ({ mobileOpen, handleDrawerToggle }) => {
+export const SideDrawer = ({ mobileOpen, handleDrawerToggle, handleCountrySelected, geoData }) => {
     //const { window } = undefined;//props;
     const classes = useStyles();
     const theme = useTheme();
@@ -31,16 +31,22 @@ export const SideDrawer = ({ mobileOpen, handleDrawerToggle }) => {
     useEffect(() => {
         const fetchApi = async () => {
             const data = await fetchCountries();
+            data.unshift({ name: 'Global', code: 'GL'});
             setCountryData({ countries: data, filtered: data });
+
+            if(geoData){
+        var countries = geoData.features.map(feature=>feature.properties.name)
+    }
         };
         fetchApi();
+        
     }, []);
 
     function toTitles(s) { return s.replace(/\w\S*/g, function (t) { return t.charAt(0).toUpperCase() + t.substr(1).toLowerCase(); }); }
 
     function handleChange(e) {
         var input = toTitles(e.target.value);
-        var filteredList = countryData.countries.filter(country => input === '' || country.includes(input))
+        var filteredList = countryData.countries.filter(country => input === '' || country.name.includes(input))
         setCountryData({ countries: countryData.countries, filtered: filteredList });
     }
 
@@ -50,21 +56,13 @@ export const SideDrawer = ({ mobileOpen, handleDrawerToggle }) => {
             <SearchCountry handleChange={handleChange} />
             <Divider />
             <List>
-                {countryData.filtered.map((text, index) => (
-                    <ListItem button key={text}>
+                {countryData.filtered.map((country, index) => (
+                    <ListItem button key={country.name}>
                         {/* <ListItemIcon>{index % 2 === 0 ? <InboxIcon /> : <MailIcon />}</ListItemIcon> */}
-                        <ListItemText primary={text} />
+                        <ListItemText primary={country.name} onClick={(e)=>handleCountrySelected(country.code)} />
                     </ListItem>
                 ))}
             </List>
-            <Divider />
-            {/* <List>
-                {['All mail', 'Trash', 'Spam'].map((text, index) => (
-                    <ListItem button key={text}>
-                        <ListItemText primary={text} />
-                    </ListItem>
-                ))}
-            </List> */}
         </div>
     );
 
@@ -102,6 +100,5 @@ export const SideDrawer = ({ mobileOpen, handleDrawerToggle }) => {
                 </Drawer>
             </Hidden>
         </nav>
-
     )
 }

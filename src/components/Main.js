@@ -28,9 +28,8 @@ const useStyles = makeStyles((theme) => ({
     },
 }));
 
-export default function CenteredGrid() {
+export default function CenteredGrid({data, countryData}) {
     const classes = useStyles();
-
     return (
         <div className={classes.root}>
             <main className={classes.content}>
@@ -38,30 +37,30 @@ export default function CenteredGrid() {
                 <Grid container spacing={1}>
                     <Grid item xs={6}>
                         <Paper className={classes.paper}>
-                            <Typography variant="h5" gutterBottom>4343,35343,223</Typography>
-                            <Typography variant="subtitle1" gutterBottom>Infected Cases</Typography>
+                            <Typography variant="h5" gutterBottom>{countryData && countryData.confirmed}</Typography>
+                            <Typography variant="subtitle1" gutterBottom>Confirmed Cases</Typography>
                         </Paper>
                     </Grid>
                     <Grid item xs={6}>
                     <Paper className={classes.paper}>
-                            <Typography variant="h5" gutterBottom>4343,35343,223</Typography>
+                            <Typography variant="h5" gutterBottom>{countryData && countryData.recovered}</Typography>
                             <Typography variant="subtitle1" gutterBottom>Recovered Cases</Typography>
                         </Paper>
                     </Grid>
                     <Grid item xs={6}>
                     <Paper className={classes.paper}>
-                            <Typography variant="h5" gutterBottom>4343,35343,223</Typography>
+                            <Typography variant="h5" gutterBottom>{countryData && countryData.deaths}</Typography>
                             <Typography variant="subtitle1" gutterBottom>Deaths Cases</Typography>
                         </Paper>
                     </Grid>
                     <Grid item xs={6}>
                     <Paper className={classes.paper}>
-                            <Typography variant="h5" gutterBottom>4343,35343,223</Typography>
-                            <Typography variant="subtitle1" gutterBottom>Unresolved Cases</Typography>
+                            <Typography variant="h5" gutterBottom>{countryData && countryData.pop_est}</Typography>
+                            <Typography variant="subtitle1" gutterBottom>Total Population</Typography>
                         </Paper>
                     </Grid>
                 </Grid>
-                <CovidMap/>
+                <CovidMap data={data}/>
                
             </main>
         </div>

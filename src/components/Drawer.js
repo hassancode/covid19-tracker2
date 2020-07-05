@@ -8,6 +8,7 @@ import Drawer from '@material-ui/core/Drawer';
 import { makeStyles, useTheme } from '@material-ui/core/styles';
 import SearchCountry from './SearchCountry'
 import { fetchCountries } from '../apis/CovidApi';
+import useMediaQuery from '@material-ui/core/useMediaQuery';
 
 const drawerWidth = 240;
 const useStyles = makeStyles((theme) => ({
@@ -22,11 +23,12 @@ const useStyles = makeStyles((theme) => ({
     },
     toolbar: theme.mixins.toolbar,
 }))
-export const SideDrawer = ({ mobileOpen, handleDrawerToggle, handleCountrySelected, geoData }) => {
+export const SideDrawer = ({ mobileOpen, handleDrawerToggle, handleCountrySelected, geoData, closeDrawer }) => {
     //const { window } = undefined;//props;
     const classes = useStyles();
     const theme = useTheme();
     const [countryData, setCountryData] = useState({ countries: [], filtered: [] });
+    const matches = useMediaQuery(theme.breakpoints.down('sm'));
 
     useEffect(() => {
         const fetchApi = async () => {
@@ -41,6 +43,15 @@ export const SideDrawer = ({ mobileOpen, handleDrawerToggle, handleCountrySelect
         fetchApi();
         
     }, []);
+
+    function onCountryClick(code) {
+        
+
+        if (matches) {
+            closeDrawer();
+        }
+        handleCountrySelected(code);
+    }
 
     function toTitles(s) { return s.replace(/\w\S*/g, function (t) { return t.charAt(0).toUpperCase() + t.substr(1).toLowerCase(); }); }
 
@@ -59,7 +70,7 @@ export const SideDrawer = ({ mobileOpen, handleDrawerToggle, handleCountrySelect
                 {countryData.filtered.map((country, index) => (
                     <ListItem button key={country.name}>
                         {/* <ListItemIcon>{index % 2 === 0 ? <InboxIcon /> : <MailIcon />}</ListItemIcon> */}
-                        <ListItemText primary={country.name} onClick={(e)=>handleCountrySelected(country.code)} />
+                        <ListItemText primary={country.name} onClick={(e)=>onCountryClick(country.code)} />
                     </ListItem>
                 ))}
             </List>

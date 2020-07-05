@@ -34,9 +34,9 @@ export const SideDrawer = ({ mobileOpen, handleDrawerToggle, handleCountrySelect
             data.unshift({ name: 'Global', code: 'GL'});
             setCountryData({ countries: data, filtered: data });
 
-            if(geoData){
-        var countries = geoData.features.map(feature=>feature.properties.name)
-    }
+            //if(geoData){
+        //var countries = geoData.features.map(feature=>feature.properties.name)
+  //  }
         };
         fetchApi();
         

@@ -27,21 +27,21 @@ const useStyles = makeStyles((theme) => ({
         },
     },
     toolbar: theme.mixins.toolbar,
-    icon:{
+    icon: {
         width: 28,
         marginLeft: 5,
         marginTop: 4
     }
 }));
 
-function ResponsiveDrawer({handleCountrySelected, data}) {
+function ResponsiveDrawer({ handleCountrySelected, data }) {
     const classes = useStyles();
     const [mobileOpen, setMobileOpen] = React.useState(false);
     const handleDrawerToggle = () => {
         setMobileOpen(!mobileOpen);
     };
 
-    const closeDrawer=()=>setMobileOpen(false);
+    const closeDrawer = () => setMobileOpen(false);
     return (
         <div className={classes.root}>
             <CssBaseline />
@@ -57,10 +57,10 @@ function ResponsiveDrawer({handleCountrySelected, data}) {
                         <MenuIcon />
                     </IconButton>
                     <Typography variant="h6" noWrap>
-                        COVID19  
+                        COVID19
                         <img src='/coronavirus.png' alt="logo" className={classes.icon} /> TRACKER
           </Typography>
-         
+
                 </Toolbar>
             </AppBar>
             <SideDrawer closeDrawer={closeDrawer} geoData={data} mobileOpen={mobileOpen} handleDrawerToggle={handleDrawerToggle} handleCountrySelected={handleCountrySelected} />

@@ -50,3 +50,20 @@ export const fetchDailyData = async () => {
         console.log(error);
     }
 }
+
+export const fetchGeoData = async () => {
+    try {
+        const data = fetch("https://covid19-data.p.rapidapi.com/geojson-ww", {
+            "method": "GET",
+            "headers": {
+                "x-rapidapi-host": "covid19-data.p.rapidapi.com",
+                "x-rapidapi-key": "dbf67c03a6mshcdf93c761d0bd26p1079a3jsn825caf63e790"
+            }
+        });
+        const jsonData = (await data).json();
+        const dataFromApi = await jsonData;
+        return dataFromApi;
+    } catch (error) {
+        console.log(error);
+    }
+}

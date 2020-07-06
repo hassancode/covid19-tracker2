@@ -60,8 +60,7 @@ export default function CenteredGrid({data, countryData}) {
                         </Paper>
                     </Grid>
                 </Grid>
-                <CovidMap data={data}/>
-               
+                <CovidMap data={data}/>  
             </main>
         </div>
     );

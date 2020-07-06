@@ -1,7 +1,4 @@
 import React, { useState, useEffect } from 'react'
-import List from '@material-ui/core/List';
-import ListItem from '@material-ui/core/ListItem';
-import ListItemText from '@material-ui/core/ListItemText';
 import Divider from '@material-ui/core/Divider';
 import Hidden from '@material-ui/core/Hidden';
 import Drawer from '@material-ui/core/Drawer';
@@ -9,6 +6,7 @@ import { makeStyles, useTheme } from '@material-ui/core/styles';
 import SearchCountry from './SearchCountry'
 import { fetchCountries } from '../apis/CovidApi';
 import useMediaQuery from '@material-ui/core/useMediaQuery';
+import { CountryList } from './CountryList';
 
 const drawerWidth = 240;
 const useStyles = makeStyles((theme) => ({
@@ -20,33 +18,33 @@ const useStyles = makeStyles((theme) => ({
     },
     drawerPaper: {
         width: drawerWidth,
-    },
-    toolbar: theme.mixins.toolbar,
+    }
 }))
 export const SideDrawer = ({ mobileOpen, handleDrawerToggle, handleCountrySelected, geoData, closeDrawer }) => {
     //const { window } = undefined;//props;
     const classes = useStyles();
     const theme = useTheme();
     const [countryData, setCountryData] = useState({ countries: [], filtered: [] });
+    //const [isCountryListLoaded, setCountryListLoaded] = useState(false);
     const matches = useMediaQuery(theme.breakpoints.down('sm'));
 
     useEffect(() => {
         const fetchApi = async () => {
             const data = await fetchCountries();
-            data.unshift({ name: 'Global', code: 'GL'});
-            setCountryData({ countries: data, filtered: data });
-
-            //if(geoData){
-        //var countries = geoData.features.map(feature=>feature.properties.name)
-  //  }
+            if (data) {
+                data.unshift({ name: 'Global', code: 'GL' });
+                setCountryData({ countries: data, filtered: data });
+            }
         };
         fetchApi();
-        
     }, []);
 
-    function onCountryClick(code) {
-        
+    //if (geoData) {
+        //var countries = geoData.features.map(feature => feature.properties.name)
+        //console.log('geo data', countries);
+    //}
 
+    function onCountrySelect(code) {
         if (matches) {
             closeDrawer();
         }
@@ -63,17 +61,9 @@ export const SideDrawer = ({ mobileOpen, handleDrawerToggle, handleCountrySelect
 
     const drawer = (
         <div>
-            {/* <div className={classes.toolbar} /> */}
             <SearchCountry handleChange={handleChange} />
             <Divider />
-            <List>
-                {countryData.filtered.map((country, index) => (
-                    <ListItem button key={country.name}>
-                        {/* <ListItemIcon>{index % 2 === 0 ? <InboxIcon /> : <MailIcon />}</ListItemIcon> */}
-                        <ListItemText primary={country.name} onClick={(e)=>onCountryClick(country.code)} />
-                    </ListItem>
-                ))}
-            </List>
+            <CountryList data={countryData.filtered} onCountrySelect={onCountrySelect}/>
         </div>
     );
 

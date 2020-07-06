@@ -9,7 +9,6 @@ function initMap() {
     });
 }
 
-
 function mapMarkers(results) {
     var infoWindow = new window.google.maps.InfoWindow();
     for (var i = 0; i < results.features.length; i++) {
@@ -56,7 +55,9 @@ function mapMarkers(results) {
 export const CovidMap = ({data}) => {
 const [isDataLoaded, setDataLoaded] = useState(false);
     window.initMap = initMap.bind(this);
+    console.log(isDataLoaded);
     if(data && !isDataLoaded){
+        console.log('set data');
         map.data.addGeoJson(data);
         mapMarkers(data);
         setDataLoaded(true);

@@ -1,13 +1,15 @@
-import React, {useState} from 'react'
+import React, { useState } from 'react'
 var map;
 function initMap() {
     map = new window.google.maps.Map(
         document.getElementById('map'), {
         zoom: 2,
-        center: new window.google.maps.LatLng(2.8, -187.3),
+        center: new window.google.maps.LatLng(30.44867368, -21.01409912),
         mapTypeId: 'terrain'
     });
 }
+
+
 
 function mapMarkers(results) {
     var infoWindow = new window.google.maps.InfoWindow();
@@ -52,15 +54,34 @@ function mapMarkers(results) {
 
 }
 
-export const CovidMap = ({data}) => {
-const [isDataLoaded, setDataLoaded] = useState(false);
+export const CovidMap = ({ data, selectedCountry }) => {
+    const [isDataLoaded, setDataLoaded] = useState(false);
+    
+    function setMap(countryCode) {
+        if (countryCode === "GL") {
+            map.setOptions({
+                zoom: 2,
+                center: new window.google.maps.LatLng(30.44867368, -21.01409912)
+            });
+        } else {
+            var country = data.features.find(feature => feature.properties.iso_a3 === countryCode)
+            map.setOptions({
+                zoom: 5,
+                center: new window.google.maps.LatLng(country.properties.latitude, country.properties.longitude)
+            });
+        }
+    }
+
     window.initMap = initMap.bind(this);
     console.log(isDataLoaded);
-    if(data && !isDataLoaded){
-        console.log('set data');
-        map.data.addGeoJson(data);
-        mapMarkers(data);
-        setDataLoaded(true);
+    if (data) {
+        if (!isDataLoaded) {
+            console.log('set data');
+            map.data.addGeoJson(data);
+            mapMarkers(data);
+            setDataLoaded(true);
+        }
+        setMap(selectedCountry);
     }
     return (
         <div>

@@ -9,14 +9,18 @@ function App() {
   const [data, setData] = useState();
   const [countryData, setCountryData] = useState();
   const [globalCountryData, setGlobalCountryData] = useState();
+  const [selectedCountry, setSelectedCountry] = useState('GL');
 
   function handleCountrySelected(countryCode) {
     if (countryCode === 'GL') {
       setCountryData(globalCountryData);
+      setSelectedCountry('GL');
     }
     var filteredData = data.features.filter(feature => feature.properties.iso_a3 === countryCode)
-    if (filteredData.length > 0)
-      setCountryData(filteredData[0].properties)
+    if (filteredData.length > 0){
+      setCountryData(filteredData[0].properties);
+      setSelectedCountry(countryCode);
+    }
   }
 
   useEffect(() => {
@@ -27,7 +31,7 @@ function App() {
         confirmed: dailyData.confirmed.value,
         deaths: dailyData.deaths.value,
         recovered: dailyData.recovered.value,
-        pop_est: 78000000
+        pop_est: 7800000000
       };
       setCountryData(globalData);
       setGlobalCountryData(globalData);
@@ -39,7 +43,7 @@ function App() {
   return (
     <div className="App">
       <Header data={data} handleCountrySelected={handleCountrySelected} />
-      <Main data={data} countryData={countryData} />
+      <Main data={data} countryData={countryData} selectedCountry={selectedCountry} />
     </div>
   );
 }

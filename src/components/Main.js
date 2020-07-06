@@ -4,6 +4,7 @@ import Paper from '@material-ui/core/Paper';
 import Grid from '@material-ui/core/Grid';
 import { Typography } from '@material-ui/core';
 import { CovidMap } from './CovidMap';
+import NumberFormat from 'react-number-format';
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -28,7 +29,7 @@ const useStyles = makeStyles((theme) => ({
     },
 }));
 
-export default function CenteredGrid({data, countryData}) {
+export default function CenteredGrid({data, countryData, selectedCountry}) {
     const classes = useStyles();
     return (
         <div className={classes.root}>
@@ -37,30 +38,30 @@ export default function CenteredGrid({data, countryData}) {
                 <Grid container spacing={1}>
                     <Grid item xs={6}>
                         <Paper className={classes.paper}>
-                            <Typography variant="h5" gutterBottom>{countryData && countryData.confirmed}</Typography>
+                            <Typography variant="h5" gutterBottom><NumberFormat value={countryData && countryData.confirmed} displayType={'text'} thousandSeparator={true}></NumberFormat></Typography>
                             <Typography variant="subtitle1" gutterBottom>Confirmed Cases</Typography>
                         </Paper>
                     </Grid>
                     <Grid item xs={6}>
                     <Paper className={classes.paper}>
-                            <Typography variant="h5" gutterBottom>{countryData && countryData.recovered}</Typography>
+                            <Typography variant="h5" gutterBottom><NumberFormat value={countryData && countryData.recovered} displayType={'text'} thousandSeparator={true}></NumberFormat></Typography>
                             <Typography variant="subtitle1" gutterBottom>Recovered Cases</Typography>
                         </Paper>
                     </Grid>
                     <Grid item xs={6}>
                     <Paper className={classes.paper}>
-                            <Typography variant="h5" gutterBottom>{countryData && countryData.deaths}</Typography>
+                            <Typography variant="h5" gutterBottom><NumberFormat value={countryData && countryData.deaths} displayType={'text'} thousandSeparator={true}></NumberFormat></Typography>
                             <Typography variant="subtitle1" gutterBottom>Deaths Cases</Typography>
                         </Paper>
                     </Grid>
                     <Grid item xs={6}>
                     <Paper className={classes.paper}>
-                            <Typography variant="h5" gutterBottom>{countryData && countryData.pop_est}</Typography>
+                            <Typography variant="h5" gutterBottom><NumberFormat value={countryData && countryData.pop_est} displayType={'text'} thousandSeparator={true}></NumberFormat></Typography>
                             <Typography variant="subtitle1" gutterBottom>Total Population</Typography>
                         </Paper>
                     </Grid>
                 </Grid>
-                <CovidMap data={data}/>  
+                <CovidMap data={data} selectedCountry={selectedCountry}/>  
             </main>
         </div>
     );

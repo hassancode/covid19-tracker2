@@ -66,7 +66,7 @@ export const CovidMap = ({ data, selectedCountry }) => {
         } else {
             var country = data.features.find(feature => feature.properties.iso_a3 === countryCode)
             map.setOptions({
-                zoom: 5,
+                zoom: 4,
                 center: new window.google.maps.LatLng(country.properties.latitude, country.properties.longitude)
             });
         }

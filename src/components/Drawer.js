@@ -14,10 +14,12 @@ const useStyles = makeStyles((theme) => ({
         [theme.breakpoints.up('sm')]: {
             width: drawerWidth,
             flexShrink: 0,
-        },
+        },     
     },
     drawerPaper: {
         width: drawerWidth,
+         backgroundColor: 'rgba(34, 34, 34)',
+         color: 'aliceblue'
     }
 }))
 export const SideDrawer = ({ mobileOpen, handleDrawerToggle, handleCountrySelected, geoData, closeDrawer }) => {
